@@ -1,12 +1,12 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <iostream>
+#include <bits/stdc++.h> 
+using namespace std; 
 
-
-using namespace std;
 
 int main(){
 
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 	int t;
 	cin>>t;
 
@@ -14,68 +14,40 @@ int main(){
 
 		int n;
 		cin>>n;
-		vector<int> v(n);
 
-		for(int i = 0; i < n; i++){
-			cin>>v[i];
+		int arr[n];
+		arr[0] = 0;
+		bool found = false;
+
+		for(int i = 1; i < n; i++){
+
+			int t = arr[i-1];
+			for(int j = i-2; j >= 0; j--){
+				if(arr[j] == t){
+					arr[i] = i-j-1;
+					found = true;
+					break;
+				}
+			}
+			if(!found){
+				arr[i] = 0;
+			}
+			found = false;
 		}
 
-		int count = 0, minIndex = 0, minElement = 0;
-		vector<int> t;
-		
-		for(int i = 0; i < n; i++){
-			t.push_back(v[i]);
-			t[i] -= 1;
+		// for(int i = 0; i < n; i++){
+		// 	cout<<arr[i]<<" ";
+		// }
+		// cout<<endl;
+
+		int x = arr[n-1];
+		int count = 0;
+		for (int i = 0; i < n; i++)
+		{
+			if(arr[i] == x){
+				count++;
+			}
 		}
-		int sz = t.size();
-		while(sz >= 1){
-
-// 			minIndex = min_element(t.begin(),t.end()) - t.begin();
-			minElement = *min_element(t.begin(), t.end());
-			
-			
-			for(int i = t.size()-1; i >= 0; i--){
-			    if(t[i] == minElement){
-			        minIndex = i;
-			        break;
-			    }
-			}
-
-			if(minElement == 0){
-			    t.clear();
-			    t.resize(minIndex);
-			    for(int i = 0; i < minIndex; i++){
-			        t[i] = v[i];
-			    }
-			 //   copy(v.begin(), v.begin() + minIndex, t.begin());
-			    sz = t.size();
-
-			}else if(sz == 1){
-			    count += 1;
-			    break;
-			}
-			else{
-			    t.clear();
-			    t.resize(minIndex+1);
-			    for(int i = 0; i <= minIndex; i++){
-			        t[i] = v[i];
-			    }
-			 //   copy(v.begin(), v.begin() + (minIndex+1), t.begin());
-			    count += (minIndex+1);
-			    
-			    for(int i = 0; i < t.size(); i++){
-			        t[i] -= 1;
-			    }
-			    sz = t.size();
-			   
-			}
-			
-			
-			
-			 
-
-		}
-		count += n;
 		cout<<count<<endl;
 	}
 }
